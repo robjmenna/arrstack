@@ -5,10 +5,10 @@ services:
     restart: unless-stopped
     volumes:
       # Recommended volume for FreshRSS persistent data such as configuration and SQLite databases
-      - /home/debian/freshrss/data:/var/www/FreshRSS/data
+      - ${HOME}/freshrss/data:/var/www/FreshRSS/data
       # Optional volume for storing third-party extensions
-      - /home/debian/freshrss/extensions:/var/www/FreshRSS/extensions
-      - /home/debian/freshrss/config:/config
+      - ${HOME}/freshrss/extensions:/var/www/FreshRSS/extensions
+      - ${HOME}/freshrss/config:/config
     ports:
       # If you want to open a port 8080 on the local machine:
       - 8090:80
