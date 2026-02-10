@@ -5,10 +5,10 @@ services:
     restart: unless-stopped
     volumes:
       # Recommended volume for FreshRSS persistent data such as configuration and SQLite databases
-      - ${HOME}/freshrss/data:/var/www/FreshRSS/data
+      - ${FRESHRSS_DIR}/data:/var/www/FreshRSS/data
       # Optional volume for storing third-party extensions
-      - ${HOME}/freshrss/extensions:/var/www/FreshRSS/extensions
-      - ${HOME}/freshrss/config:/config
+      - ${FRESHRSS_DIR}/extensions:/var/www/FreshRSS/extensions
+      - ${FRESHRSS_DIR}/config:/config
     ports:
       # If you want to open a port 8080 on the local machine:
       - 8090:80
@@ -17,3 +17,4 @@ services:
       - TZ=America/New_York
       - PUID=1000
       - PGID=1000
+      - FRESHRSS_DIR
