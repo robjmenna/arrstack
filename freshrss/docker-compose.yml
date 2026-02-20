@@ -20,7 +20,3 @@ services:
       - CONFIG
       - EXTENSIONS
       - DATA
-volumes:
-  - ${DATA}
-  - ${EXTENSIONS}
-  - ${CONFIG}
