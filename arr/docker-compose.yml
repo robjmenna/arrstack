@@ -1,0 +1,104 @@
+services:
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+      - UMASK=002
+    volumes:
+      - ${HOME_DIR}/prowlarr/config:/config
+    ports:
+      - 2080:80
+    restart: unless-stopped
+    environment:
+      - HOME_DIR
+  sonarr:
+    image: linuxserver/sonarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK=002
+      - TZ=America/New_York
+    volumes:
+      - ${HOME_DIR}/sonarr/config:/config
+      - media:/share
+    ports:
+      - 2180:80
+    restart: unless-stopped
+    environment:
+      - HOME_DIR
+  radarr:
+    image: linuxserver/radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+      - UMASK=002
+    volumes:
+      - ${HOME_DIR}/radarr/config:/config
+      - media:/share
+    ports:
+      - 2280:80
+    restart: unless-stopped
+    environment:
+      - HOME_DIR
+  nzbget:
+    image: linuxserver/nzbget
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+      - UMASK=002
+    volumes:
+      - ${HOME_DIR}/nzbget/config:/config
+      - media:/share
+    ports:
+      - 2380:80
+    restart: unless-stopped
+    environment:
+      - HOME_DIR
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+      - WEBUI_PORT=8080
+      - TORRENTING_PORT=6881
+    volumes:
+      - ${HOME_DIR}/qbittorrent/appdata:/config
+      - media:/share #optional
+    ports:
+      - 2480:8080
+      - 2481:6881
+    restart: unless-stopped
+    environment:
+      - HOME_DIR
+  jellyseerr:
+    image: ghcr.io/fallenbagel/jellyseerr:latest
+    init: true
+    container_name: jellyseerr
+    environment:
+      - LOG_LEVEL=info
+      - TZ=America/New_York
+      - PORT=5055 #optional
+    ports:
+      - 5055:5055
+    volumes:
+      - ${HOME_DIR}/jellyseer/config:/app/config
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:5055/api/v1/status || exit 1
+      start_period: 20s
+      timeout: 3s
+      interval: 15s
+      retries: 3
+    restart: unless-stopped
+    environment:
+      - HOME_DIR
+volumes:
+  media:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.50.3,nolock,nfsvers=4"
+      device: ":/volume1/media"
