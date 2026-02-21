@@ -151,5 +151,5 @@ volumes:
   media:
     driver_opts:
       type: "nfs"
-      o: "addr=192.168.50.3,nolock,nfsvers=4"
+      o: "addr=192.168.50.3,nolock,nfsvers=4.1,soft"
       device: ":/volume1/media"
