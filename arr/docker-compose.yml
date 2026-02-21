@@ -1,4 +1,36 @@
 services:
+  gluetun-nzbget:
+    image: qmcgaw/gluetun
+    container_name: nzbget
+    hostname: nzbget
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - 2380:80
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    volumes:
+      - ./gluetun/wireguard:/gluetun/wireguard
+    environment:
+      - VPN_SERVICE_PROVIDER=custom
+      - VPN_TYPE=wireguard
+    restart: unless-stopped
+  gluetun-qbittorrent:
+    image: qmcgaw/gluetun
+    container_name: qbittorrent
+    hostname: qbittorrent
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    ports:
+      - 2480:8080
+    volumes:
+      - ./gluetun/wireguard:/gluetun/wireguard
+    environment:
+      - VPN_SERVICE_PROVIDER=custom
+      - VPN_TYPE=wireguard
+    restart: unless-stopped
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
     environment:
@@ -48,11 +80,10 @@ services:
       - TZ=America/New_York
       - UMASK=002
       - HOME_DIR
+    network_mode: service:gluetun-nzbget
     volumes:
       - ${HOME_DIR}/nzbget/config:/config
       - media:/share
-    ports:
-      - 2380:80
     restart: unless-stopped
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
@@ -63,12 +94,10 @@ services:
       - WEBUI_PORT=8080
       - TORRENTING_PORT=6881
       - HOME_DIR
+    network_mode: service:gluetun-qbittorrent
     volumes:
       - ${HOME_DIR}/qbittorrent/appdata:/config
       - media:/share #optional
-    ports:
-      - 2480:8080
-      - 2481:6881
     restart: unless-stopped
   jellyseerr:
     image: ghcr.io/fallenbagel/jellyseerr:latest
