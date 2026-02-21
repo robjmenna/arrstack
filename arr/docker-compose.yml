@@ -122,6 +122,31 @@ services:
       interval: 15s
       retries: 3
     restart: unless-stopped
+  plex:
+    ports:
+      - 32400:32400/tcp
+      - 8324:8324/tcp
+      - 32469:32469/tcp
+      - 1900:1900/udp
+      - 32410:32410/udp
+      - 32412:32412/udp
+      - 32413:32413/udp
+      - 32414:32414/udp
+    image: plexinc/pms-docker
+    container_name: plex
+    environment:
+      - PLEX_UID=1000
+      - PLEX_GID=1000
+      - TZ=America/New_York
+      - HOME_DIR
+      - ADVERTISE_IP="http://10.0.1.2:32400/"
+    volumes:
+      - ${HOME_DIR}/plex/config:/config
+      - ${HOME_DIR}/plex/transcode:/transcode
+      - media:/share:r
+    devices:
+      - /dev/dri:/dev/dri
+    restart: unless-stopped
 volumes:
   media:
     driver_opts:
