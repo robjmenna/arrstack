@@ -139,11 +139,11 @@ services:
       - PLEX_GID=1000
       - TZ=America/New_York
       - HOME_DIR
-      - ADVERTISE_IP="http://10.0.1.2:32400/"
+      - ADVERTISE_IP="http://192.168.50.7:32400/"
     volumes:
       - ${HOME_DIR}/plex/config:/config
       - ${HOME_DIR}/plex/transcode:/transcode
-      - media:/share:r
+      - media:/share
     devices:
       - /dev/dri:/dev/dri
     restart: unless-stopped
