@@ -10,10 +10,11 @@ services:
     devices:
       - /dev/net/tun:/dev/net/tun
     volumes:
-      - ./gluetun/wireguard:/gluetun/wireguard
+      - ${HOME_DIR}/gluetun/wireguard:/gluetun/wireguard
     environment:
       - VPN_SERVICE_PROVIDER=custom
       - VPN_TYPE=wireguard
+      - HOME_DIR
     restart: unless-stopped
   gluetun-qbittorrent:
     image: qmcgaw/gluetun
@@ -26,10 +27,11 @@ services:
     ports:
       - 2480:8080
     volumes:
-      - ./gluetun/wireguard:/gluetun/wireguard
+      - ${HOME_DIR}/gluetun/wireguard:/gluetun/wireguard
     environment:
       - VPN_SERVICE_PROVIDER=custom
       - VPN_TYPE=wireguard
+      - HOME_DIR
     restart: unless-stopped
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
