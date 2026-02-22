@@ -1,17 +1,4 @@
 services:
-  gluetun:
-    image: qmcgaw/gluetun
-    cap_add:
-      - NET_ADMIN
-    devices:
-      - /dev/net/tun:/dev/net/tun
-    volumes:
-      - ${HOME_DIR}/gluetun/wireguard:/gluetun/wireguard
-    environment:
-      - VPN_SERVICE_PROVIDER=custom
-      - VPN_TYPE=wireguard
-      - HOME_DIR
-    restart: unless-stopped
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
     environment:
