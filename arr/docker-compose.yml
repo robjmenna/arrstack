@@ -16,6 +16,8 @@ services:
       - VPN_TYPE=wireguard
       - HOME_DIR
     restart: unless-stopped
+    dns:
+        - 1.1.1.1
   gluetun-qbittorrent:
     image: qmcgaw/gluetun
     container_name: qbittorrent
@@ -34,6 +36,8 @@ services:
       - VPN_SERVICE_PROVIDER=custom
       - VPN_TYPE=wireguard
       - HOME_DIR
+    dns:
+      - 1.1.1.1
     restart: unless-stopped
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
