@@ -26,6 +26,8 @@ services:
       - /dev/net/tun:/dev/net/tun
     ports:
       - 2480:8080
+      - 6881:6881
+      - 6881:6881/udp
     volumes:
       - ${HOME_DIR}/gluetun/wireguard:/gluetun/wireguard
     environment:
