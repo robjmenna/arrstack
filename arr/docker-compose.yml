@@ -1,15 +1,8 @@
 services:
-  gluetun-nzbget:
+  gluetun:
     image: qmcgaw/gluetun
-    container_name: nzbget
-    hostname: nzbget
     cap_add:
       - NET_ADMIN
-    ports:
-      - 2380:80
-      - 2480:8080
-      - 6881:6881
-      - 6881:6881/udp
     devices:
       - /dev/net/tun:/dev/net/tun
     volumes:
@@ -19,8 +12,6 @@ services:
       - VPN_TYPE=wireguard
       - HOME_DIR
     restart: unless-stopped
-    dns:
-        - 1.1.1.1
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
     environment:
@@ -70,7 +61,8 @@ services:
       - TZ=America/New_York
       - UMASK=002
       - HOME_DIR
-    network_mode: service:gluetun-nzbget
+    ports:
+      - 2380:80
     volumes:
       - ${HOME_DIR}/nzbget/config:/config
       - media:/share
@@ -85,7 +77,10 @@ services:
       - TORRENTING_PORT=6881
       - UMASK=002
       - HOME_DIR
-    network_mode: service:gluetun-nzbget
+    ports:
+      - 2480:8080
+      - 6881:6881
+      - 6881:6881/udp
     volumes:
       - ${HOME_DIR}/qbittorrent/appdata:/config
       - media:/share #optional
