@@ -1,4 +1,20 @@
 services:
+  maintainerr:
+    image: ghcr.io/maintainerr/maintainerr:latest # or maintainerr/maintainerr:latest
+    container_name: maintainerr
+    user: 1000:1000
+    volumes:
+      ${HOME_DIR}/maintainerr/data:/opt/data
+    environment:
+      - TZ=America/New_York
+      - HOME_DIR
+#      - BASE_PATH=/maintainerr # uncomment if you're serving maintainerr from a subdirectory
+#      - UI_HOSTNAME=:: # uncomment if you want to listen on IPv6 instead (default 0.0.0.0)
+#      - UI_PORT=6247 # uncomment to change the UI port (default 6246)
+#      - GITHUB_TOKEN=ghp_yourtoken # Optional: GitHub Personal Access Token for higher API rate limits (60/hr without, 5000/hr with token)
+    ports:
+      - 6246:6246
+    restart: unless-stopped
   lidarr:
     image: lscr.io/linuxserver/lidarr:latest
     container_name: lidarr
