@@ -4,7 +4,7 @@ services:
     container_name: maintainerr
     user: 1000:1000
     volumes:
-      ${HOME_DIR}/maintainerr/data:/opt/data
+      - ${HOME_DIR}/maintainerr/data:/opt/data
     environment:
       - TZ=America/New_York
       - HOME_DIR
